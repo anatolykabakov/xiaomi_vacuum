@@ -104,11 +104,11 @@ TEST(OccupancyMappingTest, OneBeamMarksRayAndHit)
     algo::OccupancyMapping mapping;
     const types::OccupancyMap layout = mapping.UpdateMap();
 
-    types::LaserData scan;
+    types::LaserScan scan;
     scan.scan_start = 0.0;
     scan.scan_resolution = 0.0;
     scan.ranges = {1.0F};
-    types::OdometryData odom;
+    types::Odometry odom;
     odom.px = 0.0;
     odom.py = 0.0;
     odom.yaw = 0.0;
@@ -152,11 +152,11 @@ TEST(OccupancyMappingTest, OneBeamMarksRayAndHit)
 TEST(OccupancyMappingTest, ShortRangeBeamDoesNotUpdateMap)
 {
     algo::OccupancyMapping mapping;
-    types::LaserData scan;
+    types::LaserScan scan;
     scan.scan_start = 0.0;
     scan.scan_resolution = 0.0;
     scan.ranges = {0.05F};
-    types::OdometryData odom;
+    types::Odometry odom;
     odom.px = 0.0;
     odom.py = 0.0;
     odom.yaw = 0.0;

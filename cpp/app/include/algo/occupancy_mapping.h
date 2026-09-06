@@ -19,13 +19,17 @@ public:
     ~OccupancyMapping();
 
     types::OccupancyMap UpdateMap();
-    void UpdateScan(const types::LaserData& scan);
-    void UpdateOdom(const types::OdometryData& odom);
+    void UpdateScan(const types::LaserScan& scan);
+    void UpdateOdom(const types::Odometry& odom);
+    /** Препятствие, которого лидар не видит (сработал бампер): ячейка в кадре карты остаётся
+     *  занятой, лучи её не стирают. */
+    void MarkObstacle(double x, double y);
 
 private:
     types::OccupancyMap map_;
-    types::LaserData scan_;
-    types::OdometryData odom_;
+    types::LaserScan scan_;
+    types::Odometry odom_;
+    std::vector<std::size_t> bump_cells_;
 
     Eigen::Matrix<double, 3, 3> map_to_grid_;
     Eigen::Matrix<double, 3, 3> lidar_to_base_;

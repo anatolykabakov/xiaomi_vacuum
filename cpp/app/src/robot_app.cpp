@@ -1,16 +1,20 @@
 #include "robot_app.h"
 
-#include "adas/middleware/manager.hpp"
-#include "nodes/log_node.h"
-#include "nodes/mapping_node.h"
-#ifdef XIAOMI_ROBOT_ENABLE_DRIVERS
-#include "nodes/player_node.h"
-#endif
-#include "nodes/zmq_bridge.h"
-#include "utils/utils.h"
-
 #include <memory>
 #include <string>
+
+#include "mw/middleware/manager.hpp"
+#include "services/control.h"
+#include "services/log.h"
+#include "services/mission.h"
+#include "services/planner.h"
+#ifdef XIAOMI_ROBOT_ENABLE_DRIVERS
+#include "services/platform.h"
+#endif
+#include "services/safety.h"
+#include "services/slam.h"
+#include "services/zmq_bridge.h"
+#include "utils/utils.h"
 
 namespace project
 {
@@ -19,14 +23,18 @@ namespace app
 
 RobotApp::RobotApp(const Config& config) : config_(config)
 {
-    middleware_ =
-        std::make_shared<adas::middleware::Manager>(adas::middleware::Manager::Mode::RealTime);
+    using mw::middleware::Manager;
+    middleware_ = std::make_shared<Manager>(Manager::Mode::RealTime);
 #ifdef XIAOMI_ROBOT_ENABLE_DRIVERS
-    middleware_->registerService<nodes::PlayerNode>(config);
+    middleware_->registerService<services::Platform>(config);
 #endif
-    middleware_->registerService<nodes::MappingNode>();
-    middleware_->registerService<nodes::LogNode>();
-    middleware_->registerService<nodes::ZmqBridge>(config);
+    middleware_->registerService<services::Slam>();
+    middleware_->registerService<services::Mission>();
+    middleware_->registerService<services::Planner>();
+    middleware_->registerService<services::Control>();
+    middleware_->registerService<services::Safety>();
+    middleware_->registerService<services::Log>();
+    middleware_->registerService<services::ZmqBridge>(config);
 }
 
 RobotApp::~RobotApp() {}

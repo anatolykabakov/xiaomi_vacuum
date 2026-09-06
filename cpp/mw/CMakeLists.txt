@@ -1,6 +1,6 @@
-# Middleware = adas manager (header-only), скопирован как есть из atom/adas:
-#   include/adas/middleware/manager.hpp
-#   include/adas/utils/logger.h   (зависимость manager.hpp)
+# Middleware = исходного проекта manager (header-only), скопирован как есть проекта:
+#   include/исходного проекта/middleware/manager.hpp
+#   include/исходного проекта/utils/logger.h   (зависимость manager.hpp)
 # Требует C++17.
 add_library(middleware INTERFACE)
 target_include_directories(

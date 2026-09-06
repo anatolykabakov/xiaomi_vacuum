@@ -15,12 +15,13 @@ class IPlayerClient
 public:
     virtual ~IPlayerClient() {}
     virtual bool UpdateRobotState() = 0;
-    virtual types::LaserData GetLaserData() const = 0;
+    virtual types::LaserScan GetLaserData() const = 0;
     virtual types::IrData GetIrSensorData() const = 0;
+    virtual types::Bumper GetBumperData() const { return types::Bumper{}; }
     virtual double GetSonarData() const = 0;
     virtual types::BatteryState GetBatteryData() const = 0;
-    virtual types::OdometryData GetOdometryData() const = 0;
-    virtual types::GyroData GetGyroData() const = 0;
+    virtual types::Odometry GetOdometryData() const = 0;
+    virtual types::Imu GetGyroData() const = 0;
     virtual bool SetVelocityCommand(double px, double py, double az) = 0;
 };
 

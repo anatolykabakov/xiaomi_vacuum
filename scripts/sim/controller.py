@@ -4,7 +4,7 @@ Pure Pursuit: следование по пути (v, ω) для дифф-при�
 Конвенция как в SingleBotLaser2D.Move:
   θ=0° → вперёд по +Y;  Δx = -v·sin(θ), Δy = +v·cos(θ)
 
-См. doc/SIM_EXPLORE_PLAN.md, planner.py
+См. planner.py
 """
 
 from __future__ import annotations

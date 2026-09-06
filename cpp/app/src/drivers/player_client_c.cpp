@@ -133,6 +133,7 @@ PlayerClientC::PlayerClientC(const std::string& host, int port)
     sonar_ = playerc_sonar_create(client_, 0);
     power_ = playerc_power_create(client_, 0);
     gyro_ = playerc_position3d_create(client_, 0);
+    bumper_ = playerc_bumper_create(client_, 0);
     if (!ir_wall_ || !ir_cliff_ || !base_ || !laser_ || !sonar_ || !power_)
     {
         throw std::runtime_error(std::string("player proxy create failed: ") + LastPlayerError());
@@ -161,6 +162,12 @@ PlayerClientC::PlayerClientC(const std::string& host, int port)
     if (playerc_power_subscribe(power_, PLAYER_OPEN_MODE) != 0)
     {
         ThrowSubscribeError("power");
+    }
+    if (bumper_ && playerc_bumper_subscribe(bumper_, PLAYER_OPEN_MODE) != 0)
+    {
+        std::fprintf(stderr, "player bumper:0 subscribe failed: %s\n", LastPlayerError().c_str());
+        playerc_bumper_destroy(bumper_);
+        bumper_ = nullptr;
     }
     if (gyro_ && playerc_position3d_subscribe(gyro_, PLAYER_OPEN_MODE) != 0)
     {
@@ -194,9 +201,9 @@ bool PlayerClientC::UpdateRobotState()
     return connected_ && ReadWithEintrRetry(client_);
 }
 
-types::LaserData PlayerClientC::GetLaserData() const
+types::LaserScan PlayerClientC::GetLaserData() const
 {
-    types::LaserData data;
+    types::LaserScan data;
     if (!laser_ || laser_->scan_count <= 0)
     {
         return data;
@@ -223,6 +230,20 @@ types::LaserData PlayerClientC::GetLaserData() const
         data.ranges[idx] = static_cast<float>(laser_->ranges[laser_->scan_count - idx - 1]);
     }
     return data;
+}
+
+types::Bumper PlayerClientC::GetBumperData() const
+{
+    types::Bumper b;
+    if (!bumper_ || bumper_->bumper_count == 0)
+    {
+        return b;
+    }
+    // Rockrobo: 3 сектора (bumper_parameter в ruby_chassis.cfg): 0 = слева, 1 = центр, 2 = справа
+    const int n = bumper_->bumper_count;
+    b.left = bumper_->bumpers[0] != 0 || (n > 1 && bumper_->bumpers[1] != 0);
+    b.right = (n > 2 && bumper_->bumpers[2] != 0) || (n > 1 && bumper_->bumpers[1] != 0);
+    return b;
 }
 
 types::IrData PlayerClientC::GetIrSensorData() const
@@ -264,9 +285,9 @@ types::BatteryState PlayerClientC::GetBatteryData() const
     return s;
 }
 
-types::OdometryData PlayerClientC::GetOdometryData() const
+types::Odometry PlayerClientC::GetOdometryData() const
 {
-    types::OdometryData odom;
+    types::Odometry odom;
     if (!base_)
     {
         return odom;
@@ -280,9 +301,9 @@ types::OdometryData PlayerClientC::GetOdometryData() const
     return odom;
 }
 
-types::GyroData PlayerClientC::GetGyroData() const
+types::Imu PlayerClientC::GetGyroData() const
 {
-    types::GyroData gyro;
+    types::Imu gyro;
     if (!gyro_)
     {
         return gyro;
@@ -338,6 +359,12 @@ void PlayerClientC::Cleanup()
         playerc_power_unsubscribe(power_);
         playerc_power_destroy(power_);
         power_ = nullptr;
+    }
+    if (bumper_)
+    {
+        playerc_bumper_unsubscribe(bumper_);
+        playerc_bumper_destroy(bumper_);
+        bumper_ = nullptr;
     }
     if (gyro_)
     {

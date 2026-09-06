@@ -8,18 +8,26 @@ file(
   GLOB_RECURSE APP_SOURCES CONFIGURE_DEPENDS
   ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
 )
-list(FILTER APP_SOURCES EXCLUDE REGEX ".*/algo/occupacy_mapping\\.cpp$")
+list(FILTER APP_SOURCES EXCLUDE REGEX ".*/algo/.*\\.cpp$")
 list(FILTER APP_SOURCES EXCLUDE REGEX ".*/drivers/.*\\.cpp$")
 
 if(NOT XIAOMI_ROBOT_ENABLE_DRIVERS)
-  list(FILTER APP_SOURCES EXCLUDE REGEX ".*/nodes/player_node\\.cpp$")
+  list(FILTER APP_SOURCES EXCLUDE REGEX ".*/services/platform\\.cpp$")
 endif()
 
 if(XIAOMI_ROBOT_ENABLE_DRIVERS)
   add_subdirectory(src/drivers)
 endif()
 
-add_library(xiaomi_robot_algo STATIC src/algo/occupacy_mapping.cpp)
+add_library(
+  xiaomi_robot_algo STATIC
+  src/algo/occupacy_mapping.cpp
+  src/algo/path_planner.cpp
+  src/algo/pure_pursuit.cpp
+  src/algo/frontier_explorer.cpp
+  src/algo/coverage_planner.cpp
+  src/algo/cleaning_mission.cpp
+)
 set_target_properties(
   xiaomi_robot_algo
   PROPERTIES POSITION_INDEPENDENT_CODE ON

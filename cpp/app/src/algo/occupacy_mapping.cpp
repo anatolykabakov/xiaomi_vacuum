@@ -87,6 +87,18 @@ OccupancyMapping::OccupancyMapping()
 
 OccupancyMapping::~OccupancyMapping() {}
 
+void OccupancyMapping::MarkObstacle(double x, double y)
+{
+    const int gx = static_cast<int>(x / map_.resolution + map_.origin_x);
+    const int gy = static_cast<int>(y / map_.resolution + (static_cast<float>(map_.height) - map_.origin_y));
+    if (gx < 0 || gy < 0 || gx >= static_cast<int>(map_.width) || gy >= static_cast<int>(map_.height)) return;
+    const size_t idx = static_cast<size_t>(gx) + static_cast<size_t>(gy) * map_.width;
+    for (size_t known : bump_cells_)
+        if (known == idx) return;
+    bump_cells_.push_back(idx);
+    map_.cells[idx] = kOccupied;
+}
+
 types::OccupancyMap OccupancyMapping::UpdateMap()
 {
     if (scan_.ranges.empty())
@@ -134,15 +146,16 @@ types::OccupancyMap OccupancyMapping::UpdateMap()
             }
         }
     }
+    for (size_t idx : bump_cells_) map_.cells[idx] = kOccupied;
     return map_;
 }
 
-void OccupancyMapping::UpdateScan(const types::LaserData& scan)
+void OccupancyMapping::UpdateScan(const types::LaserScan& scan)
 {
     scan_ = scan;
 }
 
-void OccupancyMapping::UpdateOdom(const types::OdometryData& odom)
+void OccupancyMapping::UpdateOdom(const types::Odometry& odom)
 {
     odom_ = odom;
 }

@@ -23,12 +23,12 @@ public:
     PlayerClientCPP& operator=(const PlayerClientCPP&) = delete;
 
     bool UpdateRobotState() override;
-    types::LaserData GetLaserData() const override;
+    types::LaserScan GetLaserData() const override;
     types::IrData GetIrSensorData() const override;
     double GetSonarData() const override;
     types::BatteryState GetBatteryData() const override;
-    types::OdometryData GetOdometryData() const override;
-    types::GyroData GetGyroData() const override;
+    types::Odometry GetOdometryData() const override;
+    types::Imu GetGyroData() const override;
     bool SetVelocityCommand(double px, double py, double az) override;
 
 private:

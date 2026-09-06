@@ -8,14 +8,18 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 option(BUILD_TESTING "Build tests" OFF)
 option(BUILD_PYBIND "Build pyxiaomi_robot Python module" OFF)
-option(BUILD_TESTING "Build tests" OFF)
 option(
   XIAOMI_ROBOT_ENABLE_DRIVERS
   "Build Player drivers library and enable PlayerNode" OFF
 )
 
+option(BUILD_TOOLS "Build host tools (bag_record)" ON)
+
 add_subdirectory(proto)
 add_subdirectory(cpp)
+if(BUILD_TOOLS)
+  add_subdirectory(tools)
+endif()
 
 install(
   EXPORT XiaomiRobotTargets

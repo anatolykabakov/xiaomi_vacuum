@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# ARM-сборка xiaomi_robot ХОСТОВЫМ кросс-gcc 11 (нужен C++17 для adas-middleware) против
+# ARM-сборка xiaomi_robot ХОСТОВЫМ кросс-gcc 11 (нужен C++17 для исходного проекта-middleware) против
 # sysroot робота (glibc 2.19). Канонический docker-билд (Trusty, gcc 4.8) C++17 не умеет.
 #
-# Что тут нестандартного и зачем (см. также doc/CROSS_COMPILE_CONAN_SYSROOT.md):
+# Что тут нестандартного и зачем (см. также docs/CROSS_COMPILE_CONAN_SYSROOT.md):
 #  * --sysroot НЕ убирает встроенный /usr/arm-linux-gnueabihf/include (хостовая glibc 2.35),
 #    и он ищется РАНЬШЕ sysroot -> -nostdinc + явный порядок: libstdc++ -> gcc -> sysroot.
 #  * libstdc++ gcc-11 (и conan-зависимости) ссылаются на glibc>=2.25..2.32:
@@ -48,7 +48,7 @@ arm-linux-gnueabihf-gcc --sysroot="$SR" $CINC -O2 -c "$COMPAT/glibc_compat.c" -o
 # 4. configure + build
 LD="--sysroot=$SR -B$SR/usr/lib/arm-linux-gnueabihf -static-libstdc++ -static-libgcc -no-pie $B/glibc_compat.o -lpthread"
 cmake -S "$ROOT" -B "$B" -G Ninja \
-  -DCMAKE_TOOLCHAIN_FILE="$TC" -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -DBUILD_PYBIND=OFF \
+  -DCMAKE_TOOLCHAIN_FILE="$TC" -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -DBUILD_PYBIND=OFF -DBUILD_TOOLS=OFF \
   -DXIAOMI_ROBOT_ENABLE_DRIVERS=ON -DProtobuf_PROTOC_EXECUTABLE="$PROTOC" \
   -DCMAKE_C_FLAGS="--sysroot=$SR $CINC" -DCMAKE_CXX_FLAGS="--sysroot=$SR $CXXINCS -include $COMPAT/compat_decls.h" \
   -DCMAKE_EXE_LINKER_FLAGS="$LD" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON

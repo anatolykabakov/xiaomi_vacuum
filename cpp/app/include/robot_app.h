@@ -1,14 +1,20 @@
 #pragma once
 
+#include <memory>
 #include <string>
 
-#include "adas/middleware/manager.hpp"
+#include "mw/middleware/manager.hpp"
 
 namespace project
 {
 namespace app
 {
 
+/**
+ * Собирает стек робота на менеджере исходного проекта:
+ *   Platform → Slam → Planner → Control → Platform, поверх — Safety; Log и ZmqBridge сбоку.
+ * Platform есть только при XIAOMI_ROBOT_ENABLE_DRIVERS (нужен libplayerc).
+ */
 class RobotApp
 {
 public:
@@ -28,7 +34,7 @@ public:
     void Start();
 
 private:
-    std::shared_ptr<adas::middleware::Manager> middleware_;
+    std::shared_ptr<mw::middleware::Manager> middleware_;
     Config config_;
 };
 

@@ -23,12 +23,13 @@ public:
     PlayerClientC& operator=(const PlayerClientC&) = delete;
 
     bool UpdateRobotState() override;
-    types::LaserData GetLaserData() const override;
+    types::LaserScan GetLaserData() const override;
     types::IrData GetIrSensorData() const override;
+    types::Bumper GetBumperData() const override;
     double GetSonarData() const override;
     types::BatteryState GetBatteryData() const override;
-    types::OdometryData GetOdometryData() const override;
-    types::GyroData GetGyroData() const override;
+    types::Odometry GetOdometryData() const override;
+    types::Imu GetGyroData() const override;
     bool SetVelocityCommand(double px, double py, double az) override;
 
 private:
@@ -42,6 +43,7 @@ private:
     playerc_sonar_t* sonar_{nullptr};
     playerc_power_t* power_{nullptr};
     playerc_position3d_t* gyro_{nullptr};
+    playerc_bumper_t* bumper_{nullptr};
     int laser_index_{-1};
     bool connected_{false};
 };

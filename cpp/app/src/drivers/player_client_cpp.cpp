@@ -160,9 +160,9 @@ bool PlayerClientCPP::UpdateRobotState()
     }
 }
 
-types::LaserData PlayerClientCPP::GetLaserData() const
+types::LaserScan PlayerClientCPP::GetLaserData() const
 {
-    types::LaserData data;
+    types::LaserScan data;
     if (!laser_ || laser_->GetCount() == 0)
     {
         return data;
@@ -212,9 +212,9 @@ types::BatteryState PlayerClientCPP::GetBatteryData() const
     return s;
 }
 
-types::OdometryData PlayerClientCPP::GetOdometryData() const
+types::Odometry PlayerClientCPP::GetOdometryData() const
 {
-    types::OdometryData odom;
+    types::Odometry odom;
     if (base_)
     {
         odom.px = base_->GetXPos();
@@ -227,9 +227,9 @@ types::OdometryData PlayerClientCPP::GetOdometryData() const
     return odom;
 }
 
-types::GyroData PlayerClientCPP::GetGyroData() const
+types::Imu PlayerClientCPP::GetGyroData() const
 {
-    types::GyroData gyro;
+    types::Imu gyro;
     if (!gyro_)
     {
         return gyro;
