@@ -1,0 +1,78 @@
+---
+
+Checks: >-
+  -*,
+  misc-include-cleaner,
+  readability-identifier-naming,
+  readability-magic-numbers,
+  -clang-diagnostic-error,
+  # clang-*,
+  # cppcoreguidelines-*,
+  # google-runtime-int,
+  # google-build-using-namespace,
+  # readability-*,
+  # misc-*,
+  # performance-*,
+  # modernize-*,
+  # -clang-diagnostic-unused-command-line-argument,
+  # -cppcoreguidelines-avoid-magic-numbers,
+  # -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+  # -cppcoreguidelines-pro-bounds-pointer-arithmetic
+  # -cppcoreguidelines-pro-type-reinterpret-cast
+  # -readability-magic-numbers,
+  # -readability-identifier-length,
+  # -misc-noexcept,
+  # -misc-use-internal-linkage,
+  # -misc-const-correctness,
+  # -cppcoreguidelines-non-private-member-variables-in-classes,
+  # -misc-non-private-member-variables-in-classes,
+  # -modernize-pass-by-value,
+  # -modernize-use-equals-delete,
+  # -modernize-use-trailing-return-type,
+  # -modernize-use-nodiscard,
+  # -readability-make-member-function-const,
+  # -readability-convert-member-functions-to-static,
+  # -cppcoreguidelines-init-variables,
+  # -clang-diagnostic-macro-redefined,
+  # -clang-diagnostic-builtin-macro-redefined,
+
+HeaderFilterRegex: '.*/cpp/.*\.(h|hpp)$'
+ExcludeHeaderFilterRegex: 'omp.h'
+
+ExtraArgsBefore:
+  - '-isystem/usr/include/c++/11'
+  - '-isystem/usr/include/x86_64-linux-gnu/c++/11'
+
+WarningsAsErrors: '*'
+
+CheckOptions:
+  - key: readability-identifier-naming.NamespaceCase
+    value: lower_case
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+  - key: readability-identifier-naming.StructCase
+    value: CamelCase
+  - key: readability-identifier-naming.TypedefCase
+    value: CamelCase
+  - key: readability-identifier-naming.TypeAliasCase
+    value: CamelCase
+  - key: readability-identifier-naming.FunctionCase
+    value: CamelCase
+  - key: readability-identifier-naming.GlobalFunctionCase
+    value: CamelCase
+  - key: readability-identifier-naming.ParameterCase
+    value: lower_case
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
+  - key: readability-identifier-naming.PrivateMemberCase
+    value: lower_case
+  - key: readability-identifier-naming.PrivateMemberSuffix
+    value: '_'
+  - key: readability-identifier-naming.GlobalConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.StaticConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.ConstexprVariableCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.TypeTemplateParameterCase
+    value: CamelCase

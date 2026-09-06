@@ -1,0 +1,33 @@
+# JDK 17 + Android SDK cmdline-tools + Gradle (wrapper в репозитории не хранится).
+# Сборка: из каталога android — `gradle assembleDebug`.
+FROM eclipse-temurin:17-jdk-jammy
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    ANDROID_SDK_ROOT=/opt/android-sdk \
+    ANDROID_HOME=/opt/android-sdk
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends wget unzip ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
+
+# https://developer.android.com/studio#command-tools
+ARG ANDROID_CMDLINE_TOOLS_ZIP=commandlinetools-linux-11076708_latest.zip
+RUN mkdir -p "${ANDROID_SDK_ROOT}/cmdline-tools" \
+ && wget -q "https://dl.google.com/android/repository/${ANDROID_CMDLINE_TOOLS_ZIP}" -O /tmp/cmdline-tools.zip \
+ && unzip -q /tmp/cmdline-tools.zip -d "${ANDROID_SDK_ROOT}/cmdline-tools" \
+ && mv "${ANDROID_SDK_ROOT}/cmdline-tools/cmdline-tools" "${ANDROID_SDK_ROOT}/cmdline-tools/latest" \
+ && rm -f /tmp/cmdline-tools.zip
+
+ENV PATH="${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin:${ANDROID_SDK_ROOT}/platform-tools:${PATH}"
+
+RUN yes | sdkmanager --licenses >/dev/null \
+ && sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+
+ARG GRADLE_VERSION=8.7
+RUN wget -q "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" -O /tmp/gradle.zip \
+ && unzip -q /tmp/gradle.zip -d /opt \
+ && rm -f /tmp/gradle.zip
+
+ENV PATH="/opt/gradle-8.7/bin:${PATH}"
+
+WORKDIR /workspace

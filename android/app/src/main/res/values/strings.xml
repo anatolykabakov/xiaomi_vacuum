@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Xiaomi Robot Joystick</string>
+    <string name="hint_host">Robot host</string>
+    <string name="hint_port">Cmd</string>
+    <string name="hint_map_port">Map</string>
+    <string name="map_content_description">Occupancy grid map from robot</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="status_connected">Status: connected</string>
+    <string name="status_disconnected">Status: disconnected</string>
+    <string name="command_placeholder">vx=0.00 vy=0.00 w=0.00</string>
+</resources>
