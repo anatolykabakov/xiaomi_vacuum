@@ -1,0 +1,16 @@
+# External Player build artifacts
+3pp/*
+build/*
+sysroot*
+.conan2*
+.venv*
+.gradle-android-docker/
+build-arm/
+*.log
+
+# вложенные артефакты сборки и кеши
+**/build/
+.gradle/
+__pycache__/
+*.pyc
+*.apk
