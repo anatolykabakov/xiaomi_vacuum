@@ -1,0 +1,6 @@
+{
+  "host": "127.0.0.1",
+  "player_port": 6665,
+  "zmq_sub_port": 9090,
+  "zmq_pub_port": 9091
+}

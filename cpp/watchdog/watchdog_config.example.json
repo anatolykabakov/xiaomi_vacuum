@@ -1,0 +1,14 @@
+{
+  "check_interval_sec": 2,
+  "processes": [
+    {
+      "name": "updater_example",
+      "command": [
+        "/ABSOLUTE/PATH/TO/updater/build/updater_example",
+        "/ABSOLUTE/PATH/TO/updater/install_firmware.sh"
+      ],
+      "cwd": "/ABSOLUTE/PATH/TO/updater/build",
+      "restart_delay_sec": 2
+    }
+  ]
+}

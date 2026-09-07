@@ -1,0 +1,24 @@
+Сборка APK через Docker (JDK 17 + Android SDK + Gradle в образе `xiaomi-robot-android-build`, см. `docker/Dockerfile.android`):
+
+```bash
+sudo apt install adb   # на хосте, для установки на устройство
+
+chmod +x ./scripts/build_android_docker.sh
+./scripts/build_android_docker.sh
+# или из корня проекта:
+./scripts/build.sh --android
+
+adb install -r "android/app/build/outputs/apk/debug/app-debug.apk"
+```
+
+Локально без Docker (нужны `gradle` в PATH и `ANDROID_SDK_ROOT`):
+
+```bash
+./scripts/build_android_docker.sh --host
+```
+
+Release APK (без подписи):
+
+```bash
+./scripts/build_android_docker.sh --release
+```

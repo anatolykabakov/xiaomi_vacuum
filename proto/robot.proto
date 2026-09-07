@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package xiaomi.robot;
+
+option java_package = "com.xiaomi.robotjoy.proto";
+option java_multiple_files = true;
+
+// Сообщения ZMQ-границы для новых топиков (slam/pose, robot/state, planner/*).
+// Внутри шины — структуры types::*; здесь только то, что уходит наружу/приходит снаружи.
+
+message Pose2D {
+  int64 timestamp = 1;
+  double x = 2;
+  double y = 3;
+  double yaw = 4;
+  double v = 5;
+  double w = 6;
+}
+
+message RobotState {
+  int64 timestamp = 1;
+  double battery_percent = 2;
+  bool charging = 3;
+  bool docked = 4;
+  bool bumper = 5;
+  bool cliff = 6;
+  double wall_distance = 7;
+  string mode = 8;
+  string error = 9;
+}
+
+message TrajectoryPoint {
+  double x = 1;
+  double y = 2;
+  double yaw = 3;
+  double v = 4;
+  double w = 5;
+  double t = 6;
+}
+
+message Trajectory {
+  int64 timestamp = 1;
+  uint32 goal_id = 2;
+  repeated TrajectoryPoint points = 3;
+}
+
+message Goal {
+  enum Type {
+    POINT = 0;
+    DOCK = 1;
+    STOP = 2;
+  }
+  int64 timestamp = 1;
+  Type type = 2;
+  double x = 3;
+  double y = 4;
+  double yaw = 5;
+  bool has_yaw = 6;  // false = курс в конце не важен
+  uint32 id = 7;
+}
+
+message MissionCommand {
+  enum Command {
+    START = 0;
+    STOP = 1;
+    RETURN = 2;
+  }
+  int64 timestamp = 1;
+  Command command = 2;
+}
+
+message MissionState {
+  enum State {
+    IDLE = 0;
+    EXPLORING = 1;
+    COVERING = 2;
+    RETURNING = 3;
+    DONE = 4;
+  }
+  int64 timestamp = 1;
+  State state = 2;
+  uint32 frontiers_left = 3;
+  uint32 waypoints_total = 4;
+  uint32 waypoints_done = 5;
+  double coverage_ratio = 6;
+  string detail = 7;
+}
+
+message PlannerState {
+  enum State {
+    IDLE = 0;
+    NO_MAP = 1;
+    PLANNING = 2;
+    FOLLOWING = 3;
+    BLOCKED = 4;
+    DONE = 5;
+  }
+  int64 timestamp = 1;
+  State state = 2;
+  uint32 goal_id = 3;
+  double distance_to_goal = 4;
+  string detail = 5;
+}

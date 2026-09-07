@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package xiaomi.robot;
+
+option java_package = "com.xiaomi.robotjoy.proto";
+option java_multiple_files = true;
+
+message CmdVel {
+  double vx = 1;
+  double vy = 2;
+  double w = 3;
+}

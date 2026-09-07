@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package xiaomi.robot;
+
+option java_package = "com.xiaomi.robotjoy.proto";
+option java_multiple_files = true;
+
+message OccupancyMap {
+  uint64 timestamp = 1; // unix timestamp millisec
+  uint32 width = 2;
+  uint32 height = 3;
+  float resolution = 4;
+  float origin_x = 5;
+  float origin_y = 6;
+  bytes cells = 7; // 0 = free, 100 = occupied, 255 = unknown
+  float robot_x = 8; // meters
+  float robot_y = 9; // meters
+  float robot_yaw = 10; // rad
+}

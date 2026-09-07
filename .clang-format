@@ -1,0 +1,33 @@
+BasedOnStyle: Google
+AccessModifierOffset: -4 # 3.3
+AlignAfterOpenBracket: BlockIndent # 3.8
+AlignOperands: true
+AlignTrailingComments: true
+AlignEscapedNewlines: Right
+BreakConstructorInitializers: BeforeComma
+AllowAllArgumentsOnNextLine: false # 3.3
+AllowAllConstructorInitializersOnNextLine: false # 3.3
+AllowAllParametersOfDeclarationOnNextLine: false # 3.3
+AllowShortFunctionsOnASingleLine: Empty # 3.5
+BinPackArguments: false # 3.7
+BinPackParameters: false # 3.7
+BreakBeforeBraces: Allman # 3.7
+ColumnLimit: 100 # 3.7
+DerivePointerAlignment: false # 3.7
+IncludeBlocks: Preserve # 6
+IncludeCategories: # 3.8
+- Regex: '^(<|")(assert|complex|ctype|errno|fenv|float|inttypes|iso646|limits|locale|math|setjmp|signal|stdalign|stdargh|stdatomic|stdbool|stddef|stdint|stdio|stdlib|stdnoreturn|string|tgmath|threads|time|uchar|wchar|wctype)\.h(>|")$'
+  Priority: 3
+- Regex: '^(<|")(cstdlib|csignal|csetjmp|cstdarg|typeinfo|typeindex|type_traits|bitset|functional|utility|ctime|chrono|cstddef|initializer_list|tuple|any|optional|variant|new|memory|scoped_allocator|memory_resource|climits|cfloat|cstdint|cinttypes|limits|exception|stdexcept|cassert|system_error|cerrno|cctype|cwctype|cstring|cwchar|cuchar|string|string_view|array|vector|deque|list|forward_list|set|map|unordered_set|unordered_map|stack|queue|algorithm|execution|teratorslibrary|iterator|cmath|complex|valarray|random|numeric|ratio|cfenv|iosfwd|ios|istream|ostream|iostream|fstream|sstream|strstream|iomanip|streambuf|cstdio|locale|clocale|codecvt|regex|atomic|thread|mutex|shared_mutex|future|condition_variable|filesystem|ciso646|ccomplex|ctgmath|cstdalign|cstdbool)(>|")$'
+  Priority: 4
+- Regex: '^\"'
+  Priority: 1
+- Regex: '^<'
+  Priority: 2
+IndentWidth: 4 # 3.7
+# InsertBraces requires clang-format 19+ (pre-commit / CI may use 18)
+PointerAlignment: Left # 3.7
+QualifierAlignment: Left # 14
+
+Language: Cpp
+Standard: c++17

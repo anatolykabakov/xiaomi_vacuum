@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package xiaomi.robot;
+
+option java_package = "com.xiaomi.robotjoy.proto";
+option java_multiple_files = true;
+
+import "map.proto";
+import "cmd_vel.proto";
+import "robot.proto";
+
+// Конверт ZMQ-границы.
+// Наружу (PUB 9091): occupancy_map, pose, robot_state, trajectory, planner_state, mission_state.
+// Внутрь (SUB 9090): cmd_vel (телеоперация), goal (цель планировщику), mission_command (уборка).
+message ZmqMessage {
+  int64 timestamp = 1;
+  string topic = 2;
+  oneof payload {
+    OccupancyMap occupancy_map = 3;
+    CmdVel cmd_vel = 4;
+    Pose2D pose = 5;
+    RobotState robot_state = 6;
+    Trajectory trajectory = 7;
+    Goal goal = 8;
+    PlannerState planner_state = 9;
+    MissionCommand mission_command = 10;
+    MissionState mission_state = 11;
+  }
+}
